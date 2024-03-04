@@ -1,55 +1,53 @@
-import { useState } from 'react';
-import './Form.css';
+import React, { useState } from "react";
 
-function Form() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+const Form = () => {
+  const [show, setShow] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
-  const handleFirstNameChange = (event) => {
-    const value = event.target.value.replace(/[^a-zA-Z ]/g, '');
-    setFirstName(value.trim());
+  const showText = (e) => {
+    e.preventDefault();
+    if (firstName !== "" && lastName !== "") {
+      setShow(true);
+    }
   };
 
-  const handleLastNameChange = (event) => {
-    const value = event.target.value.replace(/[^a-zA-Z ]/g, '');
-    setLastName(value.trim());
+  const handleChange = (e) => {
+    if (e.target.name === "firstName") {
+      setFirstName(e.target.value);
+    } else {
+      setLastName(e.target.value);
+    }
   };
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    setSubmitted(true);
-  };
-
   return (
-    <div className='container'>
-      <div className='card'>
-        <form onSubmit={handleFormSubmit}>
-          <div className='col-sm-6'>
-            {submitted && firstName !== '' && lastName !== '' ? (
-              <h3>Full Name: {firstName} {lastName}</h3>
-            ) : (
-              <h3>Full Name Display</h3>
-            )}
-          </div>
-
-          <div className='col-sm-6'>
-            <label htmlFor="firstName">First Name</label>
-            <input type="text" id="firstName" value={firstName} onChange={handleFirstNameChange} />
-          </div>
-
-          <div className='col-sm-6'>
-            <label htmlFor='lastName'>Last Name</label>
-            <input type='text' id='lastName' value={lastName} onChange={handleLastNameChange} />
-          </div>
-
-          <div className='col-sm-6'>
-            <button type='submit'>Submit</button>
-          </div>
-        </form>
-      </div>
+    <div>
+      <form onSubmit={showText}>
+        <h1>Full Name Display</h1>
+        <label>First Name:</label>
+        <input
+          type="text"
+          name="firstName"
+          value={firstName}
+          onChange={handleChange}
+        />
+        <br />
+        <label>Last Name:</label>
+        <input
+          type="text"
+          name="lastName"
+          value={lastName}
+          onChange={handleChange}
+        />
+        <br />
+        <button type="submit">Submit</button>
+      </form>
+      {show && (
+        <p>
+          Full Name: {firstName} {lastName}
+        </p>
+      )}
     </div>
   );
-}
+};
 
 export default Form;
